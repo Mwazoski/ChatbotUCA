@@ -1,59 +1,52 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\esProfesor;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\EjercicioController;
+use App\Http\Controllers\adminController;
+use App\Http\Controllers\modoLibreController;
+use App\Http\Controllers\editarEjercicioController;
+use App\Http\Middleware\esProfesor;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// Importante: Asegúrate de que los nombres de los espacios de nombres sean correctos
+// según la ubicación de tus controladores.
 
-Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::prefix('home')->group(function () { Route::get('/', 'HomeController@index'); });
+Route::prefix('home')->group(function () { 
+  Route::get('/', [HomeController::class, 'index']); 
+});
 
 Route::prefix('ejercicio')->group(function () {
-  Route::get('/{id}', 'EjercicioController@index', function ($id) {});
-  Route::Post('ajaxFormularioQuery', 'EjercicioController@ajaxFormularioQuery');
+  Route::get('/{id}', [EjercicioController::class, 'index']);
+  Route::post('ajaxFormularioQuery', [EjercicioController::class, 'ajaxFormularioQuery']);
 });
 
 Route::prefix('admin')->group(function () {
-  Route::get('/administracion', 'adminController@administracion');
-  Route::get('/contacto', 'adminController@contacto');
-  Route::post('/editarPerfil', 'adminController@editarPerfil');
+  Route::get('/administracion', [adminController::class, 'administracion']);
+  Route::get('/contacto', [adminController::class, 'contacto']);
+  Route::post('/editarPerfil', [adminController::class, 'editarPerfil']);
 });
 
 Route::prefix('modoLibre')->group(function(){
-  Route::get('/', 'modoLibreController@index');
-  Route::Post('ajaxFormularioQuery', 'modoLibreController@ajaxFormularioQuery');
+  Route::get('/', [modoLibreController::class, 'index']);
+  Route::post('ajaxFormularioQuery', [modoLibreController::class, 'ajaxFormularioQuery']);
 });
 
-Route::get('ajaxVerTabla', 'EjercicioController@ajaxVerTabla');
-Route::get('comprobarTutorial', 'EjercicioController@comprobarTutorial');
-Route::get('ejercicioTerminado', 'EjercicioController@ejercicioTerminado');
+Route::get('ajaxVerTabla', [EjercicioController::class, 'ajaxVerTabla']);
+Route::get('comprobarTutorial', [EjercicioController::class, 'comprobarTutorial']);
+Route::get('ejercicioTerminado', [EjercicioController::class, 'ejercicioTerminado']);
 
-Route::get('/editarEjercicio/eliminarEjercicio', 'editarEjercicioController@eliminarEjercicio', function ($id) {});
-Route::get('/editarEjercicio/editar/{id}', 'editarEjercicioController@editar', function ($id) {});
-Route::get('/editarEjercicio', 'editarEjercicioController@index')->middleware(esProfesor::class);
-Route::get('/editarEjercicio/estadistica', 'editarEjercicioController@estadistica')->middleware(esProfesor::class);
-Route::get('/editarEjercicio/ajaxMostrarIntento', 'editarEjercicioController@ajaxMostrarIntento')->middleware(esProfesor::class);
-Route::get('/editarEjercicio/ajaxMostrarModoLibre', 'editarEjercicioController@ajaxMostrarModoLibre')->middleware(esProfesor::class);
-Route::Post('/editarEjercicio/ajaxValidaQuery', 'editarEjercicioController@ajaxValidaQuery')->middleware(esProfesor::class);
-Route::get('/editarEjercicio/crear', 'editarEjercicioController@crear')->middleware(esProfesor::class);
-Route::get('/editarEjercicio/crearJsonEjercicio', 'editarEjercicioController@crearJsonEjercicio')->middleware(esProfesor::class);
-Route::get('/editarEjercicio/estadisticamlibre', 'editarEjercicioController@estadisticamlibre')->middleware(esProfesor::class);
-Route::get('/editarEjercicio/tasks', 'editarEjercicioController@exportCsv')->middleware(esProfesor::class);;
-Route::get('/editarEjercicio/tasksml', 'editarEjercicioController@exportCsvMl')->middleware(esProfesor::class);;
+Route::get('/editarEjercicio/eliminarEjercicio/{id}', [editarEjercicioController::class, 'eliminarEjercicio']);
+Route::get('/editarEjercicio/editar/{id}', [editarEjercicioController::class, 'editar']);
+Route::get('/editarEjercicio', [editarEjercicioController::class, 'index'])->middleware(esProfesor::class);
+Route::get('/editarEjercicio/estadistica', [editarEjercicioController::class, 'estadistica'])->middleware(esProfesor::class);
+Route::get('/editarEjercicio/ajaxMostrarIntento', [editarEjercicioController::class, 'ajaxMostrarIntento'])->middleware(esProfesor::class);
+Route::get('/editarEjercicio/ajaxMostrarModoLibre', [editarEjercicioController::class, 'ajaxMostrarModoLibre'])->middleware(esProfesor::class);
+Route::post('/editarEjercicio/ajaxValidaQuery', [editarEjercicioController::class, 'ajaxValidaQuery'])->middleware(esProfesor::class);
+Route::get('/editarEjercicio/crear', [editarEjercicioController::class, 'crear'])->middleware(esProfesor::class);
+Route::get('/editarEjercicio/crearJsonEjercicio', [editarEjercicioController::class, 'crearJsonEjercicio'])->middleware(esProfesor::class);
+Route::get('/editarEjercicio/estadisticamlibre', [editarEjercicioController::class, 'estadisticamlibre'])->middleware(esProfesor::class);
+Route::get('/editarEjercicio/tasks', [editarEjercicioController::class, 'exportCsv'])->middleware(esProfesor::class);
+Route::get('/editarEjercicio/tasksml', [editarEjercicioController::class, 'exportCsvMl'])->middleware(esProfesor::class);
 
-Auth::routes(['register' => false]); 
-
-//Dejamos el registro deshabilitado (grupo alumnos cerrado, para abrir a usuarios externos quitar lo que va entre [])
-//Auth::routes();
+Auth::routes(['register' => false]);

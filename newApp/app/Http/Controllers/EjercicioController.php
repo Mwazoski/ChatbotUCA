@@ -121,12 +121,18 @@ class EjercicioController extends Controller
     public function ajaxVerTabla(Request $request)
     {
         try {
-            $verTabla = DB::connection('mysql2')->select($request->consulta);
+            $consulta = $request->input('consulta', ''); // El segundo parámetro es un valor predeterminado en caso de que 'consulta' no exista.
+            // Ahora puedes usar $consulta sabiendo que has accedido de manera segura.
+            $verTabla = DB::connection('mysql2')->select($consulta);
         } catch (\Illuminate\Database\QueryException $ex) {
-            return Response::json($ex->getMessage());
+            // Es una buena práctica también manejar la posibilidad de que $ex->getMessage() pueda contener información sensible.
+            return response()->json(['error' => 'Error en la consulta.']);
         }
-        return $verTabla;
+    
+        // Asegúrate de devolver una respuesta JSON adecuada si $verTabla es un resultado directo de la base de datos.
+        return response()->json($verTabla);
     }
+    
 
     public function comprobarTutorial(Request $request)
     {

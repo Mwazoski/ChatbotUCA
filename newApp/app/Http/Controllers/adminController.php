@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\refrescarLogsController;
 use App\Models\Ejercicio;
-use App\User;
-use Session;
-use Response;
-use DB;
+use App\Models\User;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 
 class adminController extends Controller
