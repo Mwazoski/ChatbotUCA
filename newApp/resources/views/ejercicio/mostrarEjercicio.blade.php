@@ -92,8 +92,8 @@ const swalWithBootstrapButtons = Swal.mixin({
 })
 
 
-$(document).on('click', '.borrarEsteEjercicio', function(){
-  var id = $(this).data('id');
+$(document).on('click', '.borrarEsteEjercicio', function() {
+  var id = $(this).data('id'); // Retrieve the ID.
   swalWithBootstrapButtons.fire({
     title: "¿Estás seguro?",
     text: "No podrás revertir los cambios!",
@@ -104,18 +104,25 @@ $(document).on('click', '.borrarEsteEjercicio', function(){
     reverseButtons: true
   }).then((result) => {
     if (result.value) {
-      var ejercicioEliminado = $(this).parent().parent();
+      var ejercicioEliminado = $(this).closest('tr'); // More reliable way to find the parent row, if it's in a table.
       $.ajax({
-        type:'get',
-        url:'./editarEjercicio/eliminarEjercicio',
-        data:{id:id},
+        type: 'GET', // Keeping GET as per the original setup, though DELETE is more semantic for removal operations.
+        url: `./editarEjercicio/eliminarEjercicio/${id}`, // Modified to include the ID in the URL path.
         dataType: 'json',
-        success:function(data){
+        success: function(data) {
           ejercicioEliminado.remove();
           swalWithBootstrapButtons.fire(
             'Borrado!',
-            'El ejercicio ha sido borrado',
+            'El ejercicio ha sido borrado.',
             'success'
+          )
+        },
+        error: function(xhr, status, error) {
+          // Handle potential error. It's good practice to provide feedback on failure.
+          swalWithBootstrapButtons.fire(
+            'Error',
+            'No se pudo borrar el ejercicio. Intenta de nuevo.',
+            'error'
           )
         }
       });
@@ -124,12 +131,13 @@ $(document).on('click', '.borrarEsteEjercicio', function(){
     ) {
       swalWithBootstrapButtons.fire(
         'Cancelado',
-        'No se ha borrado nada',
+        'No se ha borrado nada.',
         'error'
       )
     }
   })
 });
+
 </script>
 @endsection
 @endsection

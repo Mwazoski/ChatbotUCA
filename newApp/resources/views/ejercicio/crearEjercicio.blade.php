@@ -51,7 +51,7 @@
   <div class="card mt-4 mb-4" style="width:90%;margin:auto;background-color: white;">
     <div class="card-body">
       <h5 class="card-title" style="font-weight: bold;border-bottom: 1px solid #5aaf70; padding-bottom: 5px;">Formulario</h5>
-      <form action="{{action('editarEjercicioController@crearJsonEjercicio')}}" method="get" class="mt-3 mb-3">
+      <form action="/editarEjercicio/crearJsonEjercicio" method="get" class="mt-3 mb-3">
         <div class="col-12 " style="display: inline-flex;padding-bottom: 2rem;">
           <div class="col-5" style="background-color: #f3f3f3;
     border-radius: 5px;">

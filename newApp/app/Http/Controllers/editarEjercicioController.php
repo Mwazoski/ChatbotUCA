@@ -12,12 +12,11 @@ use App\Models\ModoLibreLogs;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\DB;
 
-class editarEjercicioController extends Controller
-{
+class editarEjercicioController extends Controller {
 
 
   /**
@@ -35,23 +34,20 @@ class editarEjercicioController extends Controller
   *
   * @return \Illuminate\Contracts\Support\Renderable
   */
-  public function index(Request $request)
-  {
+  public function index(Request $request) {
     /*  $ApiController = new refrescarLogsController;
     $api = $ApiController->index();*/
     $todosEjercicios = Ejercicio::all();
     return view('ejercicio.mostrarEjercicio', ['todosEjercicios' => $todosEjercicios]);
   }
 
-  public function crear(Request $request)
-  {
+  public function crear(Request $request) {
     return view('ejercicio.crearEjercicio', [
       "query" => "",
       "id" => -1,
       "clausulas" => ""]);
   }
-  public function editar($id)
-  {
+  public function editar($id) {
     $Ejercicio = Ejercicio::find($id);
     $esShow = false;
     $clausulaArray = array();
@@ -108,8 +104,7 @@ class editarEjercicioController extends Controller
     "ayuda" => json_decode($Ejercicio->ayuda,true)]);
   }
 
-  public function estadistica(Request $request)
-  {
+  public function estadistica(Request $request) {
     //intentos por dia
     $fechaInicio = Carbon::now()->subDays(7)->toDateTimeString();
     $fechaFin = Carbon::now()->toDateTimeString();
@@ -265,8 +260,7 @@ class editarEjercicioController extends Controller
     );
     return view('ejercicio.estadistica', $datos);
   }
-  public function estadisticamlibre(Request $request)
-  {
+  public function estadisticamlibre(Request $request) {
     $nombre = $request->get('nombre');
     $correo = $request->get('correo');
     $fechaIni = $request->get('fechaInicio');
@@ -285,6 +279,7 @@ class editarEjercicioController extends Controller
     );
     return view('ejercicio.estadisticamlibre', $datos);
   }
+
   public function ajaxMostrarIntento(Request $request){
     $conversacion = Logs::select("consultas","errores","conversacion")->find($request->id);
 
@@ -350,10 +345,17 @@ class editarEjercicioController extends Controller
     return Response::json($datos);
   }
 
-  public function eliminarEjercicio(Request $request){
-    $listaBots = Ejercicio::find($request->id)->delete();
-    return Response::json("success");
+  public function eliminarEjercicio(Request $request, $id){
+    $ejercicio = Ejercicio::find($id);
+
+    if ($ejercicio) {
+        $ejercicio->delete();
+        return response()->json("success");
+    } else {
+        return response()->json("ejercicio not found", 404);
+    }
   }
+
 
   public function crearJsonEjercicio(Request $request)
   {
@@ -461,7 +463,7 @@ class editarEjercicioController extends Controller
     $nuevoEjercicio->ayuda = json_encode($pistas);
     $nuevoEjercicio->save();
 
-    return redirect()->action('editarEjercicioController@index');
+    return redirect()->route('editarEjercicio.index');
   }
 
   public function ajaxValidaQuery(Request $request)

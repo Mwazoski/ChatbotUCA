@@ -5,6 +5,8 @@ use App\Http\Controllers\EjercicioController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\modoLibreController;
 use App\Http\Controllers\editarEjercicioController;
+use App\Http\Controllers\OpenAIController;
+
 use App\Http\Middleware\esProfesor;
 
 // Importante: Asegúrate de que los nombres de los espacios de nombres sean correctos
@@ -36,9 +38,9 @@ Route::get('ajaxVerTabla', [EjercicioController::class, 'ajaxVerTabla']);
 Route::get('comprobarTutorial', [EjercicioController::class, 'comprobarTutorial']);
 Route::get('ejercicioTerminado', [EjercicioController::class, 'ejercicioTerminado']);
 
-Route::get('/editarEjercicio/eliminarEjercicio/{id}', [editarEjercicioController::class, 'eliminarEjercicio']);
+Route::get('/editarEjercicio', [editarEjercicioController::class, 'index'])->middleware(esProfesor::class)->name('editarEjercicio.index');
+Route::get('/editarEjercicio/eliminarEjercicio/{id}', [editarEjercicioController::class, 'eliminarEjercicio'])->middleware(esProfesor::class)->name('editarEjercicio.eliminarEjercicio');
 Route::get('/editarEjercicio/editar/{id}', [editarEjercicioController::class, 'editar']);
-Route::get('/editarEjercicio', [editarEjercicioController::class, 'index'])->middleware(esProfesor::class);
 Route::get('/editarEjercicio/estadistica', [editarEjercicioController::class, 'estadistica'])->middleware(esProfesor::class);
 Route::get('/editarEjercicio/ajaxMostrarIntento', [editarEjercicioController::class, 'ajaxMostrarIntento'])->middleware(esProfesor::class);
 Route::get('/editarEjercicio/ajaxMostrarModoLibre', [editarEjercicioController::class, 'ajaxMostrarModoLibre'])->middleware(esProfesor::class);
@@ -48,5 +50,7 @@ Route::get('/editarEjercicio/crearJsonEjercicio', [editarEjercicioController::cl
 Route::get('/editarEjercicio/estadisticamlibre', [editarEjercicioController::class, 'estadisticamlibre'])->middleware(esProfesor::class);
 Route::get('/editarEjercicio/tasks', [editarEjercicioController::class, 'exportCsv'])->middleware(esProfesor::class);
 Route::get('/editarEjercicio/tasksml', [editarEjercicioController::class, 'exportCsvMl'])->middleware(esProfesor::class);
+
+Route::get('open-api', [OpenAIController::class, 'index']);
 
 Auth::routes(['register' => false]);
