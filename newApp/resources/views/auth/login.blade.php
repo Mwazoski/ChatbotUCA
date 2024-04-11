@@ -20,7 +20,7 @@
             <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Usuario" required />
             @if ($errors->has('name'))
             <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('name') }}</strong>
+                <p class="text-sm py-2 text-red-500">{{ $errors->first('name') }}</p>
             </span>
             @endif
         </div>
@@ -29,7 +29,7 @@
             <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
             @if ($errors->has('password'))
             <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('password') }}</strong>
+                <p class="text-sm py-2 text-red-500">{{ $errors->first('password') }}</p>
             </span>
             @endif
         </div>
